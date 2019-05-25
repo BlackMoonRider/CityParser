@@ -16,11 +16,9 @@ namespace CityParser
 
             Console.WriteLine("Enter a list of cities:");
             Parser parser = new Parser(Console.ReadLine());
-            Console.WriteLine(Environment.NewLine);
 
-            List<City> cities = parser.GetCities();
-            Statistics statistics = new Statistics(cities);
-            Console.WriteLine(statistics);
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine(parser.GetStatistics());
 
             Console.ReadKey();
         }

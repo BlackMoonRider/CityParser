@@ -8,15 +8,31 @@ namespace CityParser
 {
     class Statistics
     {
-        public City MostPopulated { get; }
-        public City LongestName { get; }
-        public List<City> DensitySortedDescending { get; }
+        private City MostPopulated { get; }
+        private City LongestName { get; }
+        private List<City> DensitySortedDescending { get; }
 
         public Statistics(List<City> cities)
         {
             MostPopulated = GetMostPopulatedCity(cities);
             LongestName = GetLongestNameCity(cities);
             DensitySortedDescending = GetDensitySortedDescendingCities(cities);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.AppendLine($"Most populated: {MostPopulated.Name} ({MostPopulated.Population} people)");
+            stringBuilder.AppendLine($"Longest name: {LongestName.Name} ({LongestName.Name.Count()} letters)");
+            stringBuilder.AppendLine($"Density: ");
+
+            foreach (City city in DensitySortedDescending)
+            {
+                stringBuilder.AppendLine($"\t{city.Name} - {city.Density}");
+            }
+
+            return stringBuilder.ToString();
         }
 
         private City GetMostPopulatedCity(List<City> cities)
@@ -67,28 +83,6 @@ namespace CityParser
             }
 
             return densitySortedDescending;
-        }
-
-        private void Swap (ref City city1, ref City city2)
-        {
-            City temp = city1;
-            city1 = city2;
-            city2 = temp;
-        }
-
-        public override string ToString()
-        {
-            string output;
-
-            output = $"Most populated: {MostPopulated.Name} ({MostPopulated.Population} people)" + Environment.NewLine;
-            output += $"Longest name: {LongestName.Name} ({LongestName.Name.Count()} letters)" + Environment.NewLine;
-            output += $"Density: " + Environment.NewLine;
-            foreach (City city in DensitySortedDescending)
-            {
-                output += $"\t{city.Name} - {city.Density}" + Environment.NewLine;
-            }
-
-            return output;
         }
     }
 }

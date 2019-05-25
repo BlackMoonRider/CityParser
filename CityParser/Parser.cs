@@ -8,29 +8,22 @@ namespace CityParser
 {
     class Parser
     {
-        public string Input { get; }
-        public List<string> InputSemicolonDelimited { get; }
-        public List<City> Cities { get; private set; }
+        private string[] InputSemicolonDelimited { get; }
 
         public Parser(string input)
         {
-            Input = input;
-            InputSemicolonDelimited = DelimitBySemicolon(Input);
+            InputSemicolonDelimited = DelimitBySemicolon(input);
         }
 
-        private List<string> DelimitBySemicolon(string input)
+        public string GetStatistics()
         {
-            List<string> output = new List<string>();
-            output = input.Split(';').ToList();
-            return output;
+            List<City> cities = GetCities();
+            return new Statistics(cities).ToString();
         }
 
-        public List<City> GetCities()
-        {
-            return GetCities(InputSemicolonDelimited);
-        }
+        private string[] DelimitBySemicolon(string input) => input.Split(';');
 
-        public List<City> GetCities(List<string> inputSemicolonDelimited) 
+        private List<City> GetCities() 
         {
             List<City> cityList = new List<City>();
 
@@ -38,12 +31,13 @@ namespace CityParser
             uint population;
             uint area;
 
-            foreach (string item in inputSemicolonDelimited)
+            foreach (string item in InputSemicolonDelimited)
             {
-                var semicolonDelimited = item.Split('=');
+                string[] semicolonDelimited = item.Split('=');
                 name = semicolonDelimited[0];
-                uint.TryParse(semicolonDelimited[1].Split(',')[0], out population);
-                uint.TryParse(semicolonDelimited[1].Split(',')[1], out area);
+                string[] populationAndArea = semicolonDelimited[1].Split(',');
+                uint.TryParse(populationAndArea[0], out population);
+                uint.TryParse(populationAndArea[1], out area);
 
                 cityList.Add(new City(name, population, area));
             }
